@@ -1,6 +1,6 @@
 var counter = 0;
 
-setInterval(function(){
+setInterval(function () {
     counter++;
     postMessage({
         message: `Web Worker is alived. ${counter}\n`,

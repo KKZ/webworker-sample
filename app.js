@@ -15,23 +15,36 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         document.getElementById("worker1-stop").onclick = () => {
-            if (myWorker != null){
-                myWorker.terminate()
+            if (myWorker != null) {
+                myWorker.terminate();
+                myWorker = null;
             }
         };
 
-        document.getElementById("worker2-start").onclick = () => {
-            myWorker2 = new Worker('worker2.js');
-            myWorker2.onmessage = (event) => {
-                console.log("myWorker2 Event", event);
-                document.getElementById("indigoTextArea").innerText = event.data.message;
+        document.getElementById("worker2-countup").onclick = () => {
+            if (myWorker2 == null) {
+                myWorker2 = new Worker('worker2.js');
+                myWorker2.onmessage = (event) => {
+                    console.log("myWorker2 Event", event);
+                    document.getElementById("indigoTextArea").innerText = event.data.message;
+                }
             }
+            myWorker2.postMessage({
+                type: 'countup'
+            });
         };
 
-        document.getElementById("worker2-stop").onclick = () => {
-            if (myWorker2 != null){
-                myWorker2.terminate()
+        document.getElementById("worker2-countdown").onclick = () => {
+            if (myWorker2 == null) {
+                myWorker2 = new Worker('worker2.js');
+                myWorker2.onmessage = (event) => {
+                    console.log("myWorker2 Event", event);
+                    document.getElementById("indigoTextArea").innerText = event.data.message;
+                }
             }
+            myWorker2.postMessage({
+                type: 'countdown'
+            });
         };
 
         // 呼び出したWebWorker側で例外が発生した場合のサンプル
@@ -40,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
             myWorker3.onerror = (event) => {
                 console.error(event);
                 document.getElementById("lightBlueTextArea").innerText = event.message;
+                myWorker3 = null;
             }
             myWorker3.onmessage = (event) => {
                 console.log("myWorker3 Event", event);
@@ -47,9 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
 
-    }else{
+    } else {
         console.error("Web Worker 非対応のブラウザ")
     }
 });
-
-
