@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var myWorker;
     var myWorker2;
     var myWorker3;
+    var myWorker4;
 
     if (window.Worker) {
 
@@ -58,6 +59,22 @@ document.addEventListener('DOMContentLoaded', function () {
             myWorker3.onmessage = (event) => {
                 console.log("myWorker3 Event", event);
                 document.getElementById("lightBlueTextArea").innerText = event.data.message;
+            }
+        };
+
+        // WebWorker1と同じJSファイルを別WebWorkerとして起動するサンプル
+        document.getElementById("worker4-start").onclick = () => {
+            myWorker4 = new Worker('worker1.js');
+            myWorker4.onmessage = (event) => {
+                console.log("myWorker Event", event)
+                document.getElementById("blueGreyTextArea").innerText = event.data.message;
+            }
+        };
+
+        document.getElementById("worker4-stop").onclick = () => {
+            if (myWorker4 != null) {
+                myWorker4.terminate();
+                myWorker4 = null;
             }
         };
 
